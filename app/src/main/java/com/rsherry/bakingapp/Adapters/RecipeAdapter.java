@@ -29,7 +29,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_recipe, parent, false);
+                .inflate(R.layout.recipe, parent, false);
         return new RecipeViewHolder(view);
     }
 
@@ -46,7 +46,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public int getItemCount() {
-        return mRecipes.size();
+        if (mRecipes != null) {
+            return mRecipes.size();
+        } else {
+            return 0;
+        }
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {

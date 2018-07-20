@@ -11,6 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rsherry.bakingapp.data.Ingredients;
+import com.rsherry.bakingapp.data.Steps;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,8 +30,17 @@ public class ViewPagerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_viewpager, container, false);
         ButterKnife.bind(this, view);
 
+        // Getting ingredient and step lists
+        Bundle bundle = this.getArguments();
+
+
          final IngredientsFragment ingredientsFragment = new IngredientsFragment();
          final StepsFragment stepsFragment = new StepsFragment();
+
+         // Passing lists to fragments
+
+         ingredientsFragment.setArguments(bundle);
+         stepsFragment.setArguments(bundle);
 
         mViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override

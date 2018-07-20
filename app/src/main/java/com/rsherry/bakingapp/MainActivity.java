@@ -13,7 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.rsherry.bakingapp.Adapters.RecipeAdapter;
+import com.rsherry.bakingapp.data.Ingredients;
 import com.rsherry.bakingapp.data.Recipe;
+import com.rsherry.bakingapp.data.Steps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     public static final String RECIPE_LIST_FRAGMENT = "recipe_list_fragment";
     public static final String RECIPE_INDEX = "recipe_index";
     private static final String VIEWPAGER_FRAGMENT = "viewpager_fragment";
+    public static final String RECIPE_INGREDIENT_LIST = "ingredient_list";
+    public static final String RECIPE_STEP_LIST = "step_list";
 
     List<Recipe> mRecipes;
 //    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
@@ -74,8 +78,12 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     public void onListRecipeSelected(int index) {
         ViewPagerFragment viewPagerFragment = new ViewPagerFragment();
 
+        Recipe recipe = mRecipes.get(index);
+
         Bundle bundle = new Bundle();
         bundle.putInt(RECIPE_INDEX, index);
+        bundle.putParcelableArrayList(RECIPE_INGREDIENT_LIST, (ArrayList<Ingredients>) recipe.getIngredients());
+        bundle.putParcelableArrayList(RECIPE_STEP_LIST, (ArrayList<Steps>) recipe.getSteps());
 
         viewPagerFragment.setArguments(bundle);
 

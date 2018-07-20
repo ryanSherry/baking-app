@@ -39,13 +39,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Recipe recipe = mRecipes.get(position);
-        Uri uri = Uri.parse(recipe.getImage());
-
-        Picasso.get().load(uri)
-                .error(R.drawable.no_image_available)
-                .into(holder.mRecipeImage);
-        holder.mRecipeName.setText(recipe.getName());
+        holder.bindView(position);
     }
 
     @Override
@@ -70,6 +64,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
            super(itemView);
            ButterKnife.bind(this, itemView);
            itemView.setOnClickListener(this);
+       }
+
+       public void bindView(int position) {
+           mIndex = position;
+           Recipe recipe = mRecipes.get(position);
+           Uri uri = Uri.parse(recipe.getImage());
+
+           Picasso.get().load(uri)
+                   .error(R.drawable.no_image_available)
+                   .into(mRecipeImage);
+           mRecipeName.setText(recipe.getName());
        }
 
         @Override

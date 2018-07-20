@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rsherry.bakingapp.R;
+import com.rsherry.bakingapp.RecipeListFragment;
 import com.rsherry.bakingapp.data.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -20,9 +21,12 @@ import butterknife.ButterKnife;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<Recipe> mRecipes;
+    int mIndex;
+    private final RecipeListFragment.OnRecipeSelectedInterface mListener;
 
-    public RecipeAdapter(List<Recipe> recipes) {
+    public RecipeAdapter(List<Recipe> recipes, RecipeListFragment.OnRecipeSelectedInterface listener) {
         mRecipes = recipes;
+        mListener = listener;
     }
 
     @NonNull
@@ -53,22 +57,31 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //Bind views here
         @BindView(R.id.recipe_name)
         TextView mRecipeName;
         @BindView(R.id.recipe_image)
         ImageView mRecipeImage;
+        private int mIndex;
 
        public RecipeViewHolder(View itemView) {
            super(itemView);
            ButterKnife.bind(this, itemView);
+           itemView.setOnClickListener(this);
        }
-   }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onListRecipeSelected(mIndex);
+        }
+    }
 
    public void setRecipes(List<Recipe> recipeList){
         mRecipes = recipeList;
         notifyDataSetChanged();
    }
+
+
 }

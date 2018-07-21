@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<Recipe> mRecipes;
-    int mIndex;
     private final RecipeListFragment.OnRecipeSelectedInterface mListener;
 
     public RecipeAdapter(List<Recipe> recipes, RecipeListFragment.OnRecipeSelectedInterface listener) {

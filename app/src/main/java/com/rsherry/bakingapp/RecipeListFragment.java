@@ -32,7 +32,7 @@ public class RecipeListFragment extends android.support.v4.app.Fragment {
     List<Recipe> mRecipes;
 
     public interface ShareRecipeListInterface {
-        void shareRecipeList(List<Recipe> recipes);
+        void shareRecipeList(List<Recipe> recipes, Bundle onSavedInstanceState);
     }
 
     public interface OnRecipeSelectedInterface {

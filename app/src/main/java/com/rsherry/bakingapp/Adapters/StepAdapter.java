@@ -6,11 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.rsherry.bakingapp.R;
+import com.rsherry.bakingapp.VideoPlaybackActivity;
 import com.rsherry.bakingapp.data.Steps;
 import com.squareup.picasso.Picasso;
 
@@ -21,9 +22,11 @@ import butterknife.ButterKnife;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
     List<Steps> mSteps;
+    private VideoPlaybackActivity.onPlayButtonClickedInterface mListener;
 
-    public StepAdapter(List<Steps> steps) {
+    public StepAdapter(List<Steps> steps, VideoPlaybackActivity.onPlayButtonClickedInterface listener) {
         mSteps = steps;
+        mListener = listener;
     }
 
     @NonNull
@@ -44,12 +47,16 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         return mSteps.size();
     }
 
-    public class StepViewHolder extends RecyclerView.ViewHolder {
+    public class StepViewHolder extends RecyclerView.ViewHolder
+    implements View.OnClickListener{
 
+        @BindView(R.id.stepLabel) TextView mStepLabel;
         @BindView(R.id.step_image) ImageView mStepImage;
         @BindView(R.id.stepShortDescription) TextView mShortDescription;
         @BindView(R.id.stepDescription) TextView mDescription;
-        @BindView(R.id.playerView) SimpleExoPlayerView mPlayerView;
+        @BindView(R.id.playStepVideo) Button mPlayVideoButton;
+        private int mIndex;
+        private String mUrl;
 
         public StepViewHolder(View itemView) {
             super(itemView);
@@ -57,12 +64,19 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         }
 
         public void bindView(int index) {
+            mIndex = index;
             Steps step = mSteps.get(index);
+
+            mUrl = step.getVideoUrl();
+            String stepLabel = "Step: " + (index + 1);
+            mStepLabel.setText(stepLabel);
             mShortDescription.setText(step.getMshortDescription());
             mDescription.setText(step.getDescription());
 
             if (step.getVideoUrl() == null || step.getVideoUrl().equals("")) {
-                mPlayerView.setVisibility(View.GONE);
+                mPlayVideoButton.setVisibility(View.GONE);
+            } else {
+                mPlayVideoButton.setOnClickListener(this);
             }
 
             Uri uri = Uri.parse(step.getThumbnailUrl());
@@ -70,6 +84,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             Picasso.get().load(uri)
                     .error(R.drawable.no_image_available)
                     .into(mStepImage);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onItemPlayButtonClicked(mIndex, mUrl);
         }
     }
 }

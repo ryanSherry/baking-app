@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class VideoPlaybackFragment extends Fragment {
     @BindView(R.id.playerView) SimpleExoPlayerView mPlayerView;
@@ -35,15 +36,24 @@ public class VideoPlaybackFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_playback, container, false);
         ButterKnife.bind(this, view);
-        initializePlayer();
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            mUrl = bundle.getString(VideoPlaybackActivity.VIDEO_PLAYBACK_URL);
+            initializePlayer(mUrl);
+        }
+             else {
+                Timber.e("bundle sent to videoPlaybackFragment is null");
+            }
         return view;
-
     }
 
-    public void initializePlayer() {
+    @Override
+    public void onPause() {
+        super.onPause();
+        releasePlayer();
+    }
 
-        //testing player
-        mUrl = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4";
+    private void initializePlayer(String url) {
 
         if (mExoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -51,7 +61,7 @@ public class VideoPlaybackFragment extends Fragment {
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
 
-            Uri mediaUri = Uri.parse(mUrl);
+            Uri mediaUri = Uri.parse(url);
 
             String userAgent = Util.getUserAgent(getActivity(), "BakingApp");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
@@ -59,5 +69,10 @@ public class VideoPlaybackFragment extends Fragment {
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
         }
+    }
+    private void releasePlayer() {
+        mExoPlayer.stop();
+        mExoPlayer.release();
+        mExoPlayer = null;
     }
 }

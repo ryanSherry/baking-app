@@ -31,8 +31,6 @@ public class SharedViewModel extends RecipeViewModel {
 
     public static class RecipeListFragment extends Fragment {
 
-        @BindView(R.id.recyclerView)
-        RecyclerView mRecyclerView;
         List<Recipe> mRecipeList;
         private SharedViewModel model;
 

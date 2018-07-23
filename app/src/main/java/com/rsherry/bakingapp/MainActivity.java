@@ -2,17 +2,13 @@ package com.rsherry.bakingapp;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.Parcelable;
+import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
-import com.rsherry.bakingapp.Adapters.RecipeAdapter;
 import com.rsherry.bakingapp.data.Ingredients;
 import com.rsherry.bakingapp.data.Recipe;
 import com.rsherry.bakingapp.data.Steps;
@@ -20,11 +16,10 @@ import com.rsherry.bakingapp.data.Steps;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements RecipeListFragment.ShareRecipeListInterface, RecipeListFragment.OnRecipeSelectedInterface {
+public class MainActivity extends AppCompatActivity implements RecipeListFragment.ShareRecipeListInterface, RecipeListFragment.OnRecipeSelectedInterface, VideoPlaybackActivity.onPlayButtonClickedInterface {
 
     public static final String RECIPE_LIST = "recipe_list";
     public static final String RECIPE_LIST_FRAGMENT = "recipe_list_fragment";
@@ -34,13 +29,20 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     public static final String RECIPE_STEP_LIST = "step_list";
 
     List<Recipe> mRecipes;
+    private boolean mTwoPane;
 //    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        if(findViewById(R.id.two_pane) != null) {
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
 
         //Logging with Timber
 
@@ -52,26 +54,33 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
                 mRecipes = recipes;
-                shareRecipeList(mRecipes);
+                shareRecipeList(mRecipes,savedInstanceState);
 //                generateRecipeList(mRecipes);
             }
         });
     }
 
     @Override
-    public void shareRecipeList(List<Recipe> recipes) {
-        //create fragment
-        RecipeListFragment fragment = new RecipeListFragment();
+    public void shareRecipeList(List<Recipe> recipes, Bundle onSavedInstanceState) {
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(RECIPE_LIST,(ArrayList<Recipe>) recipes);
-        fragment.setArguments(bundle);
+        if(onSavedInstanceState == null) {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.placeHolder,fragment,RECIPE_LIST_FRAGMENT);
-        fragmentTransaction.commit();
+            RecipeListFragment fragment = new RecipeListFragment();
 
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(RECIPE_LIST, (ArrayList<Recipe>) recipes);
+            fragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            if(!mTwoPane) {
+            fragmentTransaction.add(R.id.placeHolder, fragment, RECIPE_LIST_FRAGMENT);
+            } else {
+                fragmentTransaction.add(R.id.master_list_tablet_placeholder, fragment, RECIPE_LIST_FRAGMENT);
+            }
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
@@ -88,16 +97,22 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         viewPagerFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();;
-        fragmentTransaction.replace(R.id.placeHolder, viewPagerFragment, VIEWPAGER_FRAGMENT);
-        fragmentTransaction.addToBackStack(null);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        //Handle UI for both tablets and phones
+        if(!mTwoPane) {
+            fragmentTransaction.replace(R.id.placeHolder, viewPagerFragment, VIEWPAGER_FRAGMENT);
+            fragmentTransaction.addToBackStack(null);
+        } else {
+            fragmentTransaction.replace(R.id.steps_list_tablet_placeholder, viewPagerFragment, VIEWPAGER_FRAGMENT);
+        }
         fragmentTransaction.commit();
     }
 
-//    public void generateRecipeList(List<Recipe> recipeList) {
-//        RecyclerView.Adapter adapter = new RecipeAdapter(recipeList);
-//        mRecyclerView.setAdapter(adapter);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(layoutManager);
-//    }
+    @Override
+    public void onItemPlayButtonClicked(int position, String url) {
+        Intent intent = new Intent(this, VideoPlaybackActivity.class);
+        intent.putExtra(VideoPlaybackActivity.VIDEO_PLAYBACK_URL,url);
+        startActivity(intent);
+    }
 }

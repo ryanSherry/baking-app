@@ -58,11 +58,7 @@ public class Ingredients implements Parcelable {
     }
 
     protected Ingredients(Parcel in) {
-        if (in.readByte() == 0) {
-            mquantity = null;
-        } else {
-            mquantity = in.readDouble();
-        }
+        mquantity = in.readDouble();
         mMeasure = in.readString();
         mIngredient = in.readString();
     }

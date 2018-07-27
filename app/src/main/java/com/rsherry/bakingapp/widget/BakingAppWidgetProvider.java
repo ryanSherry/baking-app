@@ -1,5 +1,6 @@
 package com.rsherry.bakingapp.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.rsherry.bakingapp.MainActivity;
 import com.rsherry.bakingapp.R;
 import com.rsherry.bakingapp.data.Ingredients;
 
@@ -49,7 +51,18 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         } else {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
+
+            Intent intent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    context,
+                    0,
+                    intent,
+                    0
+            );
             views.setEmptyView(R.id.widgetListView, R.id.empty_view);
+            views.setOnClickPendingIntent(R.id.linearWidgetLayout, pendingIntent);
+            views.setOnClickPendingIntent(R.id.widgetChooseRecipeButton, pendingIntent);
+
             for(int appWidgetId : appWidgetIds) {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }

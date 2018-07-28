@@ -12,6 +12,8 @@ import android.os.Bundle;
 import com.rsherry.bakingapp.data.Ingredients;
 import com.rsherry.bakingapp.data.Recipe;
 import com.rsherry.bakingapp.data.Steps;
+import com.rsherry.bakingapp.widget.BakingAppWidgetService;
+import com.rsherry.bakingapp.widget.UpdateAppWidgetService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         bundle.putParcelableArrayList(RECIPE_STEP_LIST, (ArrayList<Steps>) recipe.getSteps());
 
         viewPagerFragment.setArguments(bundle);
+
+        UpdateAppWidgetService.startActionUpdateAppWidgetService(this, recipe.getIngredients());
+
+//        Intent intent = new Intent(this.getApplicationContext(), UpdateAppWidgetService.class);
+//        intent.putParcelableArrayListExtra(RECIPE_INGREDIENT_LIST, (ArrayList<Ingredients>) recipe.getIngredients());
+//        intent.setAction(UpdateAppWidgetService.ACTION_UPDATE_LIST);
+//        sendBroadcast(intent);
+
+
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

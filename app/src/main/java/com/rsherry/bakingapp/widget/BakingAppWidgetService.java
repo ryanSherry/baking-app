@@ -52,7 +52,7 @@ class BakingAppWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.ingredient_baking_app_widget);
             if (mIngredients != null) {
                 remoteViews.setTextViewText(R.id.widget_ingredient_name, mIngredients.get(position).getIngredient());
-                String quantityMeasure = mIngredients.get(position).getMquantity() + mIngredients.get(position).getMeasure();
+                String quantityMeasure = mIngredients.get(position).getMquantity() + " " + mIngredients.get(position).getMeasure();
                 remoteViews.setTextViewText(R.id.widget_ingredient_quantity_measure, quantityMeasure);
         }
         return remoteViews;

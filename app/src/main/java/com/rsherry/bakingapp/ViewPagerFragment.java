@@ -56,7 +56,7 @@ public class ViewPagerFragment extends Fragment {
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
-                return position == 0 ? "Ingrediens" : "Steps";
+                return position == 0 ? "Ingredients" : "Steps";
             }
         });
 

@@ -20,63 +20,63 @@ public class BakingAppWidgetService extends RemoteViewsService {
         return new BakingAppWidgetRemoteViewsFactory(getApplicationContext(), intent);
     }
 
-class BakingAppWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private Context mContext;
+    class BakingAppWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+        private Context mContext;
 
-    public BakingAppWidgetRemoteViewsFactory(Context context, Intent intent) {
-        mContext = context;
+        public BakingAppWidgetRemoteViewsFactory(Context context, Intent intent) {
+            mContext = context;
 
-    }
+        }
 
-    @Override
-    public void onCreate() {
-    }
+        @Override
+        public void onCreate() {
+        }
 
-    @Override
-    public void onDataSetChanged() {
-       mIngredients = BakingAppWidgetProvider.mWidgetIngredients;
-    }
+        @Override
+        public void onDataSetChanged() {
+            mIngredients = BakingAppWidgetProvider.mWidgetIngredients;
+        }
 
-    @Override
-    public void onDestroy() {
+        @Override
+        public void onDestroy() {
 
-    }
+        }
 
-    @Override
-    public int getCount() {
-        return mIngredients.size();
-    }
+        @Override
+        public int getCount() {
+            return mIngredients.size();
+        }
 
-    @Override
-    public RemoteViews getViewAt(int position) {
-        RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.ingredient_baking_app_widget);
+        @Override
+        public RemoteViews getViewAt(int position) {
+            RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.ingredient_baking_app_widget);
             if (mIngredients != null) {
                 remoteViews.setTextViewText(R.id.widget_ingredient_name, mIngredients.get(position).getIngredient());
                 String quantityMeasure = mIngredients.get(position).getMquantity() + " " + mIngredients.get(position).getMeasure();
                 remoteViews.setTextViewText(R.id.widget_ingredient_quantity_measure, quantityMeasure);
+            }
+            return remoteViews;
         }
-        return remoteViews;
-    }
 
-    @Override
-    public RemoteViews getLoadingView() {
-        return null;
-    }
+        @Override
+        public RemoteViews getLoadingView() {
+            return null;
+        }
 
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
     }
 }
 

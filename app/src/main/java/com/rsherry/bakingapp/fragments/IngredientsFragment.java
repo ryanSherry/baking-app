@@ -1,4 +1,4 @@
-package com.rsherry.bakingapp;
+package com.rsherry.bakingapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rsherry.bakingapp.Adapters.IngredientAdapter;
+import com.rsherry.bakingapp.adapters.IngredientAdapter;
+import com.rsherry.bakingapp.activities.MainActivity;
+import com.rsherry.bakingapp.R;
 import com.rsherry.bakingapp.data.Ingredients;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class IngredientsFragment extends Fragment {
     @BindView(R.id.ingredientsListRecyclerView)
     RecyclerView mRecyclerView;
     List<Ingredients> mIngredients;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class IngredientsFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
 
-        if(bundle != null) {
+        if (bundle != null) {
             mIngredients = bundle.getParcelableArrayList(MainActivity.RECIPE_INGREDIENT_LIST);
             IngredientAdapter adapter = new IngredientAdapter(mIngredients);
             mRecyclerView.setAdapter(adapter);

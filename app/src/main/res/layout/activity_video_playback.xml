@@ -4,4 +4,4 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/videoPlaceHolder"
-    tools:context=".VideoPlaybackActivity" />
+    tools:context=".activities.VideoPlaybackActivity" />

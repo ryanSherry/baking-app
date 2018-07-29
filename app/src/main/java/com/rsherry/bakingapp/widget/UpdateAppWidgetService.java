@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.rsherry.bakingapp.MainActivity;
 import com.rsherry.bakingapp.data.Ingredients;
 
 import java.util.ArrayList;
@@ -39,9 +38,11 @@ public class UpdateAppWidgetService extends IntentService {
     }
 
     private void handleActionUpdateList(List<Ingredients> list) {
-        Intent intent = new Intent("android.appwidget.action.APPWIDGET_UPDATE");
-        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        intent.putParcelableArrayListExtra(INGREDIENT_LIST, (ArrayList<Ingredients>) list);
-        sendBroadcast(intent);
+        if (list != null) {
+            Intent intent = new Intent("android.appwidget.action.APPWIDGET_UPDATE");
+            intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+            intent.putParcelableArrayListExtra(INGREDIENT_LIST, (ArrayList<Ingredients>) list);
+            sendBroadcast(intent);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.rsherry.bakingapp;
+package com.rsherry.bakingapp.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -21,13 +22,17 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.rsherry.bakingapp.activities.MainActivity;
+import com.rsherry.bakingapp.R;
+import com.rsherry.bakingapp.activities.VideoPlaybackActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class VideoPlaybackFragment extends Fragment {
-    @BindView(R.id.playerView) SimpleExoPlayerView mPlayerView;
+    @BindView(R.id.playerView)
+    SimpleExoPlayerView mPlayerView;
     private SimpleExoPlayer mExoPlayer;
     private String mUrl;
 
@@ -37,13 +42,12 @@ public class VideoPlaybackFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_video_playback, container, false);
         ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             mUrl = bundle.getString(VideoPlaybackActivity.VIDEO_PLAYBACK_URL);
             initializePlayer(mUrl);
+        } else {
+            Timber.e("bundle sent to videoPlaybackFragment is null");
         }
-             else {
-                Timber.e("bundle sent to videoPlaybackFragment is null");
-            }
         return view;
     }
 
@@ -68,10 +72,18 @@ public class VideoPlaybackFragment extends Fragment {
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+
+            //Handle no connection on video screen
+
+            if (!MainActivity.networkIsConnected(getActivity())) {
+                Toast.makeText(getActivity(), "No Internet Connection, click back and try again later", Toast.LENGTH_LONG).show();
+
+            }
         }
     }
+
     private void releasePlayer() {
-        if(mExoPlayer != null) {
+        if (mExoPlayer != null) {
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;

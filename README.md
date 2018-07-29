@@ -21,3 +21,4 @@ These are the features I implemented:
 
 - Widget that displays a list of ingredients
 - Tablet layout
+- ViewPager

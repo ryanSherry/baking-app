@@ -8,4 +8,6 @@
     <string name="image_of_recipe">Image of recipe</string>
     <string name="play_video_for_this_step">Play video for this step</string>
     <string name="step">Step:</string>
+    <string name="no_internet_connection">No Internet Connection, try again later</string>
+    <string name="switch_landscape_fullscreen">Switch to landscape mode for full-screen video</string>
 </resources>

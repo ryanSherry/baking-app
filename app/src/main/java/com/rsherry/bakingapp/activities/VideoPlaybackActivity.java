@@ -28,7 +28,7 @@ public class VideoPlaybackActivity extends AppCompatActivity {
 
         if (findViewById(R.id.master_list_tablet_placeholder) == null) {
             if (this.getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                Toast.makeText(this, "Switch to landscape mode for full-screen video", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.switch_landscape_fullscreen, Toast.LENGTH_LONG).show();
             }
         }
 

@@ -1,6 +1,8 @@
 # baking-app
 Project 4 of Udacity/Google NanoDegree
 
+https://review.udacity.com/#!/rubrics/829/view
+
 For this project, I built a baking app which pulls from an api and displays recipes.
 Users can then click on a recipe to view ingredients and steps. Users can also view available videos for steps as well.
 

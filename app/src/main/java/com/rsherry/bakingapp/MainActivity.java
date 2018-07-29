@@ -2,12 +2,17 @@ package com.rsherry.bakingapp;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.rsherry.bakingapp.data.Ingredients;
 import com.rsherry.bakingapp.data.Recipe;
@@ -21,7 +26,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements RecipeListFragment.ShareRecipeListInterface, RecipeListFragment.OnRecipeSelectedInterface, VideoPlaybackActivity.onPlayButtonClickedInterface {
+public class MainActivity extends AppCompatActivity implements RecipeListFragment.ShareRecipeListInterface, RecipeListFragment.OnRecipeSelectedInterface, VideoPlaybackActivity.onPlayButtonClickedInterface, NoInternetFragment.internetConnectionOnClickRefresh {
 
     public static final String RECIPE_LIST = "recipe_list";
     public static final String RECIPE_LIST_FRAGMENT = "recipe_list_fragment";
@@ -29,16 +34,19 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     private static final String VIEWPAGER_FRAGMENT = "viewpager_fragment";
     public static final String RECIPE_INGREDIENT_LIST = "ingredient_list";
     public static final String RECIPE_STEP_LIST = "step_list";
+    private static final String NO_INTERNET_FRAGMENT = "no_internet";
 
     List<Recipe> mRecipes;
     private boolean mTwoPane;
-//    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+    Intent mStarterIntent;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        mStarterIntent = getIntent();
 
         if(findViewById(R.id.two_pane) != null) {
             mTwoPane = true;
@@ -57,15 +65,20 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
             public void onChanged(@Nullable List<Recipe> recipes) {
                 mRecipes = recipes;
                 shareRecipeList(mRecipes,savedInstanceState);
-//                generateRecipeList(mRecipes);
             }
         });
+        // Show toast if no internet connection
+
+        if(!networkIsConnected(getApplicationContext()) && mRecipes == null) {
+            Toast.makeText(MainActivity.this, "No Internet Connection, try again later", Toast.LENGTH_LONG).show();
+            noConnectionFragmentGenerator();
+        }
     }
 
     @Override
     public void shareRecipeList(List<Recipe> recipes, Bundle onSavedInstanceState) {
 
-        if(onSavedInstanceState == null) {
+        if (onSavedInstanceState == null) {
 
             RecipeListFragment fragment = new RecipeListFragment();
 
@@ -76,11 +89,12 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            if(!mTwoPane) {
-            fragmentTransaction.add(R.id.placeHolder, fragment, RECIPE_LIST_FRAGMENT);
+            if (!mTwoPane) {
+                fragmentTransaction.add(R.id.placeHolder, fragment, RECIPE_LIST_FRAGMENT);
             } else {
                 fragmentTransaction.add(R.id.master_list_tablet_placeholder, fragment, RECIPE_LIST_FRAGMENT);
             }
+
             fragmentTransaction.commit();
         }
     }
@@ -100,14 +114,6 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
 
         UpdateAppWidgetService.startActionUpdateAppWidgetService(this, recipe.getIngredients());
 
-//        Intent intent = new Intent(this.getApplicationContext(), UpdateAppWidgetService.class);
-//        intent.putParcelableArrayListExtra(RECIPE_INGREDIENT_LIST, (ArrayList<Ingredients>) recipe.getIngredients());
-//        intent.setAction(UpdateAppWidgetService.ACTION_UPDATE_LIST);
-//        sendBroadcast(intent);
-
-
-
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -126,5 +132,28 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         Intent intent = new Intent(this, VideoPlaybackActivity.class);
         intent.putExtra(VideoPlaybackActivity.VIDEO_PLAYBACK_URL,url);
         startActivity(intent);
+    }
+
+
+    public static boolean networkIsConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm != null ? cm.getActiveNetworkInfo() : null;
+
+        return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+    private void noConnectionFragmentGenerator(){
+        NoInternetFragment noInternetFragment = new NoInternetFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.placeHolder, noInternetFragment,NO_INTERNET_FRAGMENT);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void clickRefresh() {
+        finish();
+        startActivity(mStarterIntent);
     }
 }

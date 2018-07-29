@@ -39,11 +39,7 @@ public class RecipeRepository {
 
             @Override
             public void onFailure(retrofit2.Call<List<Recipe>> call, Throwable t) {
-//                if (t instanceof IOException) {
-//                    Toast.makeText(), "There is currently no network connection", Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "This is a software bug. Please contact the developer of this app to                        investigate", Toast.LENGTH_LONG).show();
-//                }
+
                 }
             });
         return mRecipes;

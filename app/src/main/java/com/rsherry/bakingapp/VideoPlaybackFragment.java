@@ -8,8 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -68,6 +70,13 @@ public class VideoPlaybackFragment extends Fragment {
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+
+            //Handle no connection on video screen
+
+            if (!MainActivity.networkIsConnected(getActivity())) {
+                Toast.makeText(getActivity(),"No Internet Connection, click back and try again later", Toast.LENGTH_LONG).show();
+
+            }
         }
     }
     private void releasePlayer() {

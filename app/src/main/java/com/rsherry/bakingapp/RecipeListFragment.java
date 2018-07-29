@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
 import com.rsherry.bakingapp.Adapters.RecipeAdapter;
 import com.rsherry.bakingapp.data.Ingredients;

@@ -40,11 +40,20 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
-public class VideoPlaybackActivityTest {
+public class MultipleRecyclerViewNavigationActivityTests {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRecyclerViewTests
             = new ActivityTestRule<>(MainActivity.class);
 
+    //Verify text on recipes list
+    @Test
+    public void testRecipeListText() {
+        onView(ViewMatchers.withId(R.id.recipeRecyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(3, scrollTo()))
+                .check(matches(hasDescendant(withText("Yellow Cake"))));
+    }
+
+    // Verify all recipes can be clicked and can go back each time to show previous fragment in backstack
     @Test
     public void clickRecipeTest() {
         //1. Find View
@@ -63,6 +72,7 @@ public class VideoPlaybackActivityTest {
     }
 
     //Verify steps list fragment that is part of viewpager
+
     @Test
     public void testViewPagerSwipe() {
         onView(ViewMatchers.withId(R.id.recipeRecyclerView))
@@ -70,10 +80,4 @@ public class VideoPlaybackActivityTest {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
     }
 
-    //Verify video button
-    @Test
-    public void testIngredientsText() {
-        onView(ViewMatchers.withId(R.id.recipeRecyclerView))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-    }
 }

@@ -46,7 +46,7 @@ public class ViewPagerFragment extends Fragment {
         mViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return position == 0 ? ingredientsFragment : stepsFragment;
+                return position == 0 ? stepsFragment : ingredientsFragment;
             }
 
             @Override
@@ -57,7 +57,7 @@ public class ViewPagerFragment extends Fragment {
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
-                return position == 0 ? "Ingredients" : "Steps";
+                return position == 0 ? "Steps":"Ingredients";
             }
         });
 

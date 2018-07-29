@@ -76,11 +76,11 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
                 shareRecipeList(mRecipes, savedInstanceState);
             }
         });
-        
+
         // Show toast if no internet connection
 
         if (!networkIsConnected(getApplicationContext()) && mRecipes == null) {
-            Toast.makeText(MainActivity.this, "No Internet Connection, try again later", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, R.string.no_internet_connection, Toast.LENGTH_LONG).show();
             noConnectionFragmentGenerator();
         }
     }

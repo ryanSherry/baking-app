@@ -59,7 +59,7 @@ public class IntentTesting {
 
         onView(withId(R.id.recipeRecyclerView))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.viewPager)).perform(swipeLeft());
+//        onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.stepsListRecyclerView)).perform(RecyclerViewActions
                 .actionOnItemAtPosition(0, RecyclerViewActionClickChild.clickChildViewWithId(R.id.playStepVideo)));
 

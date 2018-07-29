@@ -1,4 +1,4 @@
-package com.rsherry.bakingapp.Adapters;
+package com.rsherry.bakingapp.adapters;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rsherry.bakingapp.R;
-import com.rsherry.bakingapp.RecipeListFragment;
+import com.rsherry.bakingapp.fragments.RecipeListFragment;
 import com.rsherry.bakingapp.data.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -59,22 +59,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         ImageView mRecipeImage;
         private int mIndex;
 
-       public RecipeViewHolder(View itemView) {
-           super(itemView);
-           ButterKnife.bind(this, itemView);
-           itemView.setOnClickListener(this);
-       }
+        public RecipeViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
 
-       public void bindView(int position) {
-           mIndex = position;
-           Recipe recipe = mRecipes.get(position);
-           Uri uri = Uri.parse(recipe.getImage());
+        public void bindView(int position) {
+            mIndex = position;
+            Recipe recipe = mRecipes.get(position);
+            Uri uri = Uri.parse(recipe.getImage());
 
-           Picasso.get().load(uri)
-                   .error(R.drawable.no_image_available)
-                   .into(mRecipeImage);
-           mRecipeName.setText(recipe.getName());
-       }
+            Picasso.get().load(uri)
+                    .error(R.drawable.no_image_available)
+                    .into(mRecipeImage);
+            mRecipeName.setText(recipe.getName());
+        }
 
         @Override
         public void onClick(View v) {
@@ -82,10 +82,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
     }
 
-   public void setRecipes(List<Recipe> recipeList){
+    public void setRecipes(List<Recipe> recipeList) {
         mRecipes = recipeList;
         notifyDataSetChanged();
-   }
+    }
 
 
 }

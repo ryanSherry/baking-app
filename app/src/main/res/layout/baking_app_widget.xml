@@ -10,7 +10,7 @@
         android:id="@+id/widgetChooseRecipeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Launch app and Choose Recipe"/>
+        android:text="@string/launch_app_and_choose_recipe"/>
 
     <ListView
         android:id="@+id/widgetListView"
@@ -22,11 +22,9 @@
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_margin="8dp"
         android:background="#09C"
-        android:text="Select recipe to see ingredients"
+        android:text="@string/select_recipe_to_see_ingredients"
         android:textColor="#000"
         android:textSize="20sp"
         android:textStyle="bold|italic" />

@@ -15,7 +15,8 @@ import java.util.List;
 
 public class RecipeViewModel extends ViewModel {
     private MutableLiveData<List<Recipe>> recipes;
-    public LiveData<List<Recipe>> getRecipes(){
+
+    public LiveData<List<Recipe>> getRecipes() {
         if (recipes == null) {
             recipes = new MutableLiveData<List<Recipe>>();
             loadRecipes();

@@ -1,4 +1,4 @@
-package com.rsherry.bakingapp.Adapters;
+package com.rsherry.bakingapp.adapters;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rsherry.bakingapp.R;
-import com.rsherry.bakingapp.VideoPlaybackActivity;
+import com.rsherry.bakingapp.activities.VideoPlaybackActivity;
 import com.rsherry.bakingapp.data.Steps;
 import com.squareup.picasso.Picasso;
 
@@ -48,13 +48,18 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     }
 
     public class StepViewHolder extends RecyclerView.ViewHolder
-    implements View.OnClickListener{
+            implements View.OnClickListener {
 
-        @BindView(R.id.stepLabel) TextView mStepLabel;
-        @BindView(R.id.step_image) ImageView mStepImage;
-        @BindView(R.id.stepShortDescription) TextView mShortDescription;
-        @BindView(R.id.stepDescription) TextView mDescription;
-        @BindView(R.id.playStepVideo) Button mPlayVideoButton;
+        @BindView(R.id.stepLabel)
+        TextView mStepLabel;
+        @BindView(R.id.step_image)
+        ImageView mStepImage;
+        @BindView(R.id.stepShortDescription)
+        TextView mShortDescription;
+        @BindView(R.id.stepDescription)
+        TextView mDescription;
+        @BindView(R.id.playStepVideo)
+        Button mPlayVideoButton;
         private int mIndex;
         private String mUrl;
 
@@ -68,7 +73,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             Steps step = mSteps.get(index);
 
             mUrl = step.getVideoUrl();
-            String stepLabel = "Step: " + (index + 1);
+            String stepLabel = "Step: " + (index);
             mStepLabel.setText(stepLabel);
             mShortDescription.setText(step.getMshortDescription());
             mDescription.setText(step.getDescription());

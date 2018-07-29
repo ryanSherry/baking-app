@@ -27,8 +27,7 @@ public class RecipeRepository {
         return retrofit;
     }
 
-    public
-    MutableLiveData<List<Recipe>> getRecipes() {
+    public MutableLiveData<List<Recipe>> getRecipes() {
         final MutableLiveData<List<Recipe>> mRecipes = new MutableLiveData<>();
 
         getRetrofitInstance().create(GetEndpointData.class).getRecipeResults().enqueue(new Callback<List<Recipe>>() {
@@ -40,8 +39,8 @@ public class RecipeRepository {
             @Override
             public void onFailure(retrofit2.Call<List<Recipe>> call, Throwable t) {
 
-                }
-            });
+            }
+        });
         return mRecipes;
     }
 }

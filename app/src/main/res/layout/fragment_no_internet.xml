@@ -6,7 +6,7 @@
         android:id="@+id/noInternetRefreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click to Refresh"
+        android:text="@string/refreshWidgetButtonInstructions"
         android:layout_gravity="center_vertical|center_horizontal"/>
 
 </FrameLayout>

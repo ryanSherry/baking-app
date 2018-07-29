@@ -1,4 +1,4 @@
-package com.rsherry.bakingapp;
+package com.rsherry.bakingapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,17 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rsherry.bakingapp.data.Ingredients;
-import com.rsherry.bakingapp.data.Steps;
-
-import java.util.List;
+import com.rsherry.bakingapp.R;
+import com.rsherry.bakingapp.fragments.IngredientsFragment;
+import com.rsherry.bakingapp.fragments.StepsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ViewPagerFragment extends Fragment {
-    @BindView(R.id.viewPager) ViewPager mViewPager;
-    @BindView(R.id.tabLayout) TabLayout mTabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
+    @BindView(R.id.tabLayout)
+    TabLayout mTabLayout;
 
     @Nullable
     @Override
@@ -34,18 +35,18 @@ public class ViewPagerFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
 
-         final IngredientsFragment ingredientsFragment = new IngredientsFragment();
-         final StepsFragment stepsFragment = new StepsFragment();
+        final IngredientsFragment ingredientsFragment = new IngredientsFragment();
+        final StepsFragment stepsFragment = new StepsFragment();
 
-         // Passing lists to fragments
+        // Passing lists to fragments
 
-         ingredientsFragment.setArguments(bundle);
-         stepsFragment.setArguments(bundle);
+        ingredientsFragment.setArguments(bundle);
+        stepsFragment.setArguments(bundle);
 
         mViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return position == 0 ? ingredientsFragment: stepsFragment;
+                return position == 0 ? ingredientsFragment : stepsFragment;
             }
 
             @Override

@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.rsherry.bakingapp.MainActivity;
+import com.rsherry.bakingapp.activities.MainActivity;
 import com.rsherry.bakingapp.R;
 import com.rsherry.bakingapp.data.Ingredients;
 
@@ -29,7 +29,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, BakingAppWidgetProvider.class));
 
-        if(intent.getAction().equals(ACTION_APPWIDGET_UPDATE)) {
+        if (intent.getAction().equals(ACTION_APPWIDGET_UPDATE)) {
             mWidgetIngredients = intent.getParcelableArrayListExtra(UpdateAppWidgetService.INGREDIENT_LIST);
             if (mWidgetIngredients != null) {
                 for (int appWidgetId : appWidgetIds) {
@@ -44,7 +44,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         if (mWidgetIngredients != null) {
-            for(int appWidgetId : appWidgetIds) {
+            for (int appWidgetId : appWidgetIds) {
                 appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widgetListView);
                 updateAppWidget(context, appWidgetManager, appWidgetId);
             }
@@ -63,7 +63,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.linearWidgetLayout, pendingIntent);
             views.setOnClickPendingIntent(R.id.widgetChooseRecipeButton, pendingIntent);
 
-            for(int appWidgetId : appWidgetIds) {
+            for (int appWidgetId : appWidgetIds) {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }
         }

@@ -1,4 +1,4 @@
-package com.rsherry.bakingapp.Adapters;
+package com.rsherry.bakingapp.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.rsherry.bakingapp.R;
 import com.rsherry.bakingapp.data.Ingredients;
-import com.rsherry.bakingapp.data.Recipe;
 
 import java.util.List;
 
@@ -43,14 +42,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.ingredient_checkbox) CheckBox mIngredientCheckbox;
-        @BindView(R.id.ingredient_quantity_measure) TextView mIngredientMeasure;
-        @BindView(R.id.ingredient_name) TextView mIngredientName;
+        @BindView(R.id.ingredient_checkbox)
+        CheckBox mIngredientCheckbox;
+        @BindView(R.id.ingredient_quantity_measure)
+        TextView mIngredientMeasure;
+        @BindView(R.id.ingredient_name)
+        TextView mIngredientName;
         private int mIndex;
 
         public IngredientViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bindView(int position) {
@@ -61,6 +63,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             mIngredientName.setText(ingredient.getIngredient());
         }
     }
+
     public void setIngredients(List<Ingredients> ingredients) {
         mIngredients = ingredients;
         notifyDataSetChanged();
